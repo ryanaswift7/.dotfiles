@@ -7,7 +7,55 @@ on Ubuntu 20.04.06 LTS. I should hope Nix would make it
 such that the OS doesn't affect anything, but let me know
 if you're on another OS and get any weirdness.
 
+## Follow these steps
+
+1. Install Nix
+
+- Multi-user install recommended
+
+2. Install Home Manager
+
+- Standalone option, unless you're on NixOS
+- Follow the `master` channel
+- Only need to do steps 1 - 3
+
+3. Clone this repo
+
+- `git clone https://github.com/ryanaswift7/.dotfiles.git`
+
+4. Backup default home.nix
+
+- `mv $HOME/.config/home-manager/home.nix $HOME/.config/home-manager/home.nix.bak`
+
+5. Symlink in this repo's home.nix
+
+- `ln -s $HOME/.dotfiles/home.nix $HOME/.config/home-manager/home.nix`
+
+6. Run first HM generation with new config
+
+- `home-manager switch -b preHM` to backup conflicting/existing files with a `*.preHM` extension (recommended)
+- Use `home-manager switch` if you know no conflicts are present
+
+7. Install NixGL
+
+- nix-channel method
+
+8. Set Zsh as default shell
+
+- Add the line `$HOME/.nix-profile/bin/zsh` to `/etc/shells`
+- Then run `chsh -s $HOME/.nix-profile/bin/zsh`
+
+9. Symlink in desktop file
+
+- `sudo ln -s $HOME/.dotfiles/awesome.desktop /usr/share/xsessions/awesome.desktop`
+
+10. (Optional) Install OpenConnect-SSO in the default Python environment
+
+- Only necessary for using the VPN aliases
+
 ## Usage
+
+This section contains a somewhat more detailed version of the above steps.
 
 You're gonna need to install [Nix](https://nixos.org/download/) and [Home Manager](https://nix-community.github.io/home-manager/index.xhtml#ch-installation). Since I'm using Home Manager on a non-NixOS distro,
 I'm using the standalone install method. Then clone
@@ -16,7 +64,7 @@ default Home Manager config file with
 `mv $HOME/.config/home-manager/home.nix $HOME/.config/home-manager/home.nix.bak`  
 and symlink in this repo's home.nix with  
 `ln -s $HOME/.dotfiles/home.nix $HOME/.config/home-manager/home.nix`  
-Finally, run `home-manager switch` and you should be
+Finally, run `home-manager switch -b preHM` to backup any conflicting file paths with a `*.preHM` extension and you should be
 good to go!
 
 ## Imperative Sadness
