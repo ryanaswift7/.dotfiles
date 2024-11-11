@@ -9,11 +9,11 @@ if you're on another OS and get any weirdness.
 
 ## Step-by-step
 
-#### 1. Install Nix
+#### 1. Install [Nix](https://github.com/nix-community/nixGL)
 
 - Multi-user install recommended
 
-#### 2. Install Home Manager
+#### 2. Install [Home Manager](https://nix-community.github.io/home-manager/index.xhtml#ch-installation)
 
 - Standalone option, unless you're on NixOS
 - Follow the `master` channel
@@ -36,13 +36,14 @@ if you're on another OS and get any weirdness.
 - `home-manager switch -b preHM` to backup conflicting/existing files with a `*.preHM` extension (recommended)
 - Use `home-manager switch` if you know no conflicts are present
 
-#### 7. Install NixGL
+#### 7. Install [NixGL](https://github.com/nix-community/nixGL)
 
 - nix-channel method
 
 #### 8. Set Zsh as default shell
 
-- Add the line `$HOME/.nix-profile/bin/zsh` to `/etc/shells`
+- Add the line `/home/{your username}/.nix-profile/bin/zsh` to `/etc/shells`
+  - Note: you'll have to use the absolute path to your home folder in `/etc/shells`
 - Then run `chsh -s $HOME/.nix-profile/bin/zsh`
 
 #### 9. Symlink in desktop file
@@ -50,6 +51,8 @@ if you're on another OS and get any weirdness.
 - `sudo ln -s $HOME/.dotfiles/awesome.desktop /usr/share/xsessions/awesome.desktop`
 
 #### 10. (Optional) Install OpenConnect-SSO in the default Python environment
+
+- `pip install openconnect-sso`
 
 - Only necessary for using the VPN aliases
 
