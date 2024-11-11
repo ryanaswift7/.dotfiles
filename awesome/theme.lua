@@ -95,7 +95,8 @@ theme.titlebar_maximized_button_focus_active = themes_path .. "default/titlebar/
 
 -- Get user's home directory
 home_dir = os.getenv("HOME")
-theme.wallpaper = home_dir .. "Pictures/wallpapers/digital-art-anime-cartoon-city-road-bicycle-1745701-wallhere.com.jpg"
+theme.wallpaper = home_dir
+	.. "/Pictures/wallpapers/digital-art-anime-cartoon-city-road-bicycle-1745701-wallhere.com.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path .. "default/layouts/fairhw.png"
