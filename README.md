@@ -1,6 +1,6 @@
 # Welcome to My Dotfiles!
 
-Hi friend! Welcome to V2 of my dotfiles, where this time
+Hi friend! Welcome to v2.5 of my dotfiles, where this time
 I'm using Nix Home Manager to do things a better way.
 I'm running Pop!\_OS 22.04 LTS on all my machines, but I also tested
 on Ubuntu 20.04.06 LTS. I should hope Nix would make it
@@ -55,6 +55,11 @@ if you're on another OS and get any weirdness.
 - `pip install openconnect-sso`
 
 - Only necessary for using the VPN aliases
+
+#### 11. Done!
+
+- Logout then log back in under the AwesomeWM session
+- May need to reboot
 
 ## Usage
 
