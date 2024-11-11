@@ -24,6 +24,10 @@ good to go!
 There are a couple of things that I did imperatively
 (mostly for my sanity).
 
+#### OpenConnect-SSO
+
+I have not been able to find a way to install `openconnecct-sso` into the default user python environment, so this will have to be done imperatively with `pip install openconnect-sso`. This is only necessary for using the VPN aliases.
+
 #### NixGL
 
 I installed [nixGL](https://github.com/nix-community/nixGL)
