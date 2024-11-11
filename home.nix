@@ -77,9 +77,6 @@
     ookla-speedtest
     signal-desktop
 
-    # Python packages you want in your home environment
-    (python3.withPackages (ps: with ps; [openconnect-sso]))
-
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
