@@ -7,49 +7,49 @@ on Ubuntu 20.04.06 LTS. I should hope Nix would make it
 such that the OS doesn't affect anything, but let me know
 if you're on another OS and get any weirdness.
 
-## Follow these steps
+## Step-by-step
 
-1. Install Nix
+#### 1. Install Nix
 
 - Multi-user install recommended
 
-2. Install Home Manager
+#### 2. Install Home Manager
 
 - Standalone option, unless you're on NixOS
 - Follow the `master` channel
 - Only need to do steps 1 - 3
 
-3. Clone this repo
+#### 3. Clone this repo
 
 - `git clone https://github.com/ryanaswift7/.dotfiles.git`
 
-4. Backup default home.nix
+#### 4. Backup default home.nix
 
 - `mv $HOME/.config/home-manager/home.nix $HOME/.config/home-manager/home.nix.bak`
 
-5. Symlink in this repo's home.nix
+#### 5. Symlink in this repo's home.nix
 
 - `ln -s $HOME/.dotfiles/home.nix $HOME/.config/home-manager/home.nix`
 
-6. Run first HM generation with new config
+#### 6. Run first HM generation with new config
 
 - `home-manager switch -b preHM` to backup conflicting/existing files with a `*.preHM` extension (recommended)
 - Use `home-manager switch` if you know no conflicts are present
 
-7. Install NixGL
+#### 7. Install NixGL
 
 - nix-channel method
 
-8. Set Zsh as default shell
+#### 8. Set Zsh as default shell
 
 - Add the line `$HOME/.nix-profile/bin/zsh` to `/etc/shells`
 - Then run `chsh -s $HOME/.nix-profile/bin/zsh`
 
-9. Symlink in desktop file
+#### 9. Symlink in desktop file
 
 - `sudo ln -s $HOME/.dotfiles/awesome.desktop /usr/share/xsessions/awesome.desktop`
 
-10. (Optional) Install OpenConnect-SSO in the default Python environment
+#### 10. (Optional) Install OpenConnect-SSO in the default Python environment
 
 - Only necessary for using the VPN aliases
 
