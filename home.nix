@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "ryan";
-  home.homeDirectory = "/home/ryan";
+  home.username = builtins.getEnv "USER";
+  home.homeDirectory = builtins.getEnv "HOME";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -77,16 +77,8 @@
     ookla-speedtest
     signal-desktop
 
-    # Ensure Python and specific packages are installed
-    home.packages = with pkgs; [
-      # Python interpreter (use your preferred Python version)
-      python3
-
-      # Python packages you want in your home environment
-      (python3.withPackages (ps: with ps; [
-      openconnect-sso
-      ]))
-    ];
+    # Python packages you want in your home environment
+    (python3.withPackages (ps: with ps; [openconnect-sso]))
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -117,36 +109,36 @@
     # '';
 
     ".config/nvim" = {
-        source = config.lib.file.mkOutOfStoreSymlink "/home/ryan/.dotfiles/nvim";
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/nvim";
         recursive = true;
       };
 
     ".config/awesome" = {
-        source = "/home/ryan/.dotfiles/awesome";
+        source = "${config.home.homeDirectory}/.dotfiles/awesome";
         recursive = true;
       };
 
     ".config/polybar" = {
-        source = "/home/ryan/.dotfiles/polybar";
+        source = "${config.home.homeDirectory}/.dotfiles/polybar";
         recursive = true;
       };
 
     ".config/rofi" = {
-        source = "/home/ryan/.dotfiles/rofi";
+        source = "${config.home.homeDirectory}/.dotfiles/rofi";
         recursive = true;
       };
 
     "Pictures/wallpapers/digital-art-anime-cartoon-city-road-bicycle-1745701-wallhere.com.jpg".source = 
-            "/home/ryan/.dotfiles/digital-art-anime-cartoon-city-road-bicycle-1745701-wallhere.com.jpg";
-    ".wezterm.lua".source = config.lib.file.mkOutOfStoreSymlink "/home/ryan/.dotfiles/.wezterm.lua";
-    # ".zshrc".source = "/home/ryan/.dotfiles/.zshrc";
-    ".bashrc".source = "/home/ryan/.dotfiles/.bashrc";
-    ".xscreensaver".source = "/home/ryan/.dotfiles/.xscreensaver";
-    ".alacritty.toml".source = "/home/ryan/.dotfiles/alacritty.toml";
-    ".config/starship.toml".source = "/home/ryan/.dotfiles/starship.toml";
+            "${config.home.homeDirectory}/.dotfiles/digital-art-anime-cartoon-city-road-bicycle-1745701-wallhere.com.jpg";
+    ".wezterm.lua".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.wezterm.lua";
+    # ".zshrc".source = "${config.home.homeDirectory}/.dotfiles/.zshrc";
+    ".bashrc".source = "${config.home.homeDirectory}/.dotfiles/.bashrc";
+    ".xscreensaver".source = "${config.home.homeDirectory}/.dotfiles/.xscreensaver";
+    ".alacritty.toml".source = "${config.home.homeDirectory}/.dotfiles/alacritty.toml";
+    ".config/starship.toml".source = "${config.home.homeDirectory}/.dotfiles/starship.toml";
     ".fonts" = {
         recursive = true;
-        source = "/home/ryan/.dotfiles/.fonts";
+        source = "${config.home.homeDirectory}/.dotfiles/.fonts";
       };
 
 
@@ -252,16 +244,8 @@
       };
 
       # Enable SSH support in Home Manager
-      programs.ssh = {
-        enable = true;
-        # This will set up an SSH agent automatically
-        agent = {
-          enable = true;
-          # Optional: Add specific keys to the agent (replace with your key paths if needed)
-          # Default: It loads keys from `~/.ssh/id_rsa` or `~/.ssh/id_ed25519`
-          # identities = [];
-        };
-      };
+      programs.ssh.enable
+      services.ssh-agent.enable
 
       # Configure SSH forwarding for all hosts
       programs.ssh.extraConfig = ''

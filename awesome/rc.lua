@@ -54,9 +54,12 @@ do
 end
 -- }}}
 
+-- Get user's home directory
+home_dir = os.getenv("HOME")
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/home/ryan/.config/awesome/theme.lua")
+beautiful.init(home_dir .. ".config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "wezterm"
@@ -352,18 +355,26 @@ globalkeys = gears.table.join(
 	end, { description = "show main menu", group = "awesome" }),
 
 	-- Layout manipulation
+	-- NOTE: Assumes maximum 2 screens
+	-- swap around windows
 	awful.key({ modkey, "Shift" }, "j", function()
 		awful.client.swap.byidx(1)
 	end, { description = "swap with next client by index", group = "client" }),
 	awful.key({ modkey, "Shift" }, "k", function()
 		awful.client.swap.byidx(-1)
 	end, { description = "swap with previous client by index", group = "client" }),
-	awful.key({ modkey, "Control" }, "j", function()
+
+	-- focus "O"ther screen and move window to "O"ther screen
+	awful.key({ modkey }, "o", function()
 		awful.screen.focus_relative(1)
-	end, { description = "focus the next screen", group = "screen" }),
-	awful.key({ modkey, "Control" }, "k", function()
-		awful.screen.focus_relative(-1)
-	end, { description = "focus the previous screen", group = "screen" }),
+	end, { description = "focus other screen", group = "screen" }),
+	awful.key({ modkey, "Shift" }, "o", function()
+		if client.focus() then
+			local c = client.focus
+			c:move_to_screen()
+		end
+	end, { description = "move client to other screen", group = "screen" }),
+
 	awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
 	awful.key({ modkey }, "Tab", function()
 		awful.client.focus.history.previous()

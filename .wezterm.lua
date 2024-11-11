@@ -14,155 +14,49 @@ config.hide_tab_bar_if_only_one_tab = true
 config.window_background_opacity = 0.97
 config.front_end = "WebGpu"
 
--- change the tab switch keybind to ALT bc window manager uses SUPER
-config.keys = {
-	{
-		key = "1",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "2",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "3",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "4",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "5",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "6",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "7",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "8",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "9",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "c",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "v",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "n",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "m",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "-",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "=",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "0",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "t",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "h",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "k",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-	{
-		key = "f",
-		mods = "SUPER",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
+config.keys = {}
 
-	-- now create the new ALT ones, ignoring binds we removed but won't use
-	{
-		key = "1",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(0),
-	},
-	{
-		key = "2",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(1),
-	},
-	{
-		key = "3",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(2),
-	},
-	{
-		key = "4",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(3),
-	},
-	{
-		key = "5",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(4),
-	},
-	{
-		key = "6",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(5),
-	},
-	{
-		key = "7",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(6),
-	},
-	{
-		key = "8",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(7),
-	},
-	{
-		key = "9",
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(8),
-	},
+-- List of keys to disable with SUPER modifier
+local super_keys_to_disable = {
+	"1",
+	"2",
+	"3",
+	"4",
+	"5",
+	"6",
+	"7",
+	"8",
+	"9",
+	"c",
+	"v",
+	"n",
+	"m",
+	"-",
+	"=",
+	"0",
+	"t",
+	"h",
+	"k",
+	"f",
 }
--- and finally, return the configuration to wezterm
+
+-- Add SUPER modifier key bindings to disable default assignments
+for _, key in ipairs(super_keys_to_disable) do
+	table.insert(config.keys, {
+		key = key,
+		mods = "SUPER",
+		action = wezterm.action.DisableDefaultAssignment,
+	})
+end
+
+-- Add ALT modifier key bindings to activate tabs 0-8
+for i = 1, 9 do
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "ALT",
+		action = wezterm.action.ActivateTab(i - 1),
+	})
+end
+
+-- Return the configuration
 return config
