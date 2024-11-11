@@ -10,7 +10,6 @@ require("awful.autofocus")
 local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
--- beautiful.init("$HOME/.config/awesome/theme.lua")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
@@ -59,7 +58,7 @@ home_dir = os.getenv("HOME")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(home_dir .. ".config/awesome/theme.lua")
+beautiful.init(home_dir .. "/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "wezterm"
