@@ -244,8 +244,8 @@
       };
 
       # Enable SSH support in Home Manager
-      programs.ssh.enable
-      services.ssh-agent.enable
+      programs.ssh.enable = true;
+      services.ssh-agent.enable = true;
 
       # Configure SSH forwarding for all hosts
       programs.ssh.extraConfig = ''
