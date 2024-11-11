@@ -196,8 +196,8 @@
           ll = "eza --long --all --sort=type";
           ".." = "cd ..";
           p = "python3";
-          usc = "openconnect-sso -s vpn.usc.edu"
-          ta ="tmux attach-session -t"
+          usc = "openconnect-sso -s vpn.usc.edu";
+          ta ="tmux attach-session -t";
         };
     };
 
