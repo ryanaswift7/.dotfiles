@@ -9,6 +9,6 @@ run() {
 run "picom"
 run "blueman-applet"
 run "nm-applet"
-run "emacs --daemon"
+# run "emacs --daemon"
 run "$HOME/.config/polybar/launch.sh"
 # run "xscreensaver -no-splash"

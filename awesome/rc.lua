@@ -274,6 +274,138 @@ awful.screen.connect_for_each_screen(function(s)
 		},
 	})
   ]]
+	local colors = {
+		background = "#150d18",
+		background_alt = "#291f2b",
+		foreground = "#ffffff",
+		primary = "#F0C674",
+		secondary = "#8ABEB7",
+		alert = "#A54242",
+		disabled = "#707880",
+	}
+
+	-- Create the wibar
+	s.wibar = awful.wibar({
+		position = "top", -- Position of the wibar (top of the screen)
+		screen = s, -- Attach to the current screen
+		height = 34, -- Height of the wibar
+		bg = colors.background, -- Background color
+		fg = colors.foreground, -- Foreground (text) color
+		shape = gears.shape.rounded_rect, -- Rounded corners
+		border_width = 3, -- Border width
+		border_color = colors.disabled, -- Border color
+	})
+
+	-- Left widgets (workspace module)
+	local workspace_widget = wibox.widget({
+		{
+			{
+				awful.widget.taglist(s, awful.widget.tasklist.filter.currenttags, awful.layout.layouts[1]),
+				layout = wibox.layout.fixed.horizontal,
+			},
+			margins = 5,
+			widget = wibox.container.margin,
+		},
+		bg = colors.background_alt,
+		fg = colors.foreground,
+		shape = gears.shape.rounded_rect,
+		widget = wibox.container.background,
+	})
+
+	-- Center widgets (Date & Time)
+	local date_widget = wibox.widget.textbox()
+	date_widget:set_font("NotoSans-Medium 13")
+	gears.timer({
+		timeout = 1,
+		call_now = true,
+		autostart = true,
+		callback = function()
+			date_widget:set_text(os.date("%A, %d %B %Y"))
+		end,
+	})
+
+	local time_widget = wibox.widget.textbox()
+	time_widget:set_font("Symbols Nerd Font Mono 14")
+	gears.timer({
+		timeout = 1,
+		call_now = true,
+		autostart = true,
+		callback = function()
+			time_widget:set_text(os.date("%H:%M"))
+		end,
+	})
+
+	-- Right widgets (system information)
+	local tray_widget = wibox.widget.systray() -- System tray
+	local cpu_widget = wibox.widget.textbox()
+	local memory_widget = wibox.widget.textbox()
+	local volume_widget = wibox.widget.textbox()
+
+	-- CPU widget
+	gears.timer({
+		timeout = 2,
+		call_now = true,
+		autostart = true,
+		callback = function()
+			local cpu_usage = awful.spawn.easy_async_with_shell(
+				"top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\\([0-9.]*\\)%* id.*/\\1/' | awk '{print 100 - $1}'",
+				function(stdout)
+					cpu_widget:set_text(" " .. stdout:match("%S+"))
+				end
+			)
+		end,
+	})
+
+	-- Memory widget
+	gears.timer({
+		timeout = 2,
+		call_now = true,
+		autostart = true,
+		callback = function()
+			local memory_used = awful.spawn.easy_async_with_shell(
+				"free -h | grep Mem | awk '{print $3}'",
+				function(stdout)
+					memory_widget:set_text(" " .. stdout:match("%S+"))
+				end
+			)
+		end,
+	})
+
+	-- Volume widget
+	gears.timer({
+		timeout = 1,
+		call_now = true,
+		autostart = true,
+		callback = function()
+			awful.spawn.easy_async_with_shell(
+				"pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}'",
+				function(stdout)
+					volume_widget:set_text(" " .. stdout)
+				end
+			)
+		end,
+	})
+
+	-- Layout the widgets (left, center, and right)
+	s.wibar:setup({
+		layout = wibox.layout.align.horizontal,
+		{ -- Left side
+			layout = wibox.layout.fixed.horizontal,
+			workspace_widget,
+		},
+		{ -- Center side
+			layout = wibox.layout.flex.horizontal,
+			date_widget,
+			time_widget,
+		},
+		{ -- Right side
+			layout = wibox.layout.fixed.horizontal,
+			tray_widget,
+			cpu_widget,
+			memory_widget,
+			volume_widget,
+		},
+	})
 end)
 -- }}}
 
@@ -368,9 +500,10 @@ globalkeys = gears.table.join(
 		awful.screen.focus_relative(1)
 	end, { description = "focus other screen", group = "screen" }),
 	awful.key({ modkey, "Shift" }, "o", function()
-		if client.focus() then
-			local c = client.focus
-			c:move_to_screen()
+		local c = client.focus
+		if c then
+			local screen = awful.screen.focus_relative(1) -- Focus next screen
+			c:move_to_screen(screen) -- Move window to the next screen
 		end
 	end, { description = "move client to other screen", group = "screen" }),
 
@@ -455,9 +588,9 @@ clientkeys = gears.table.join(
 	awful.key({ modkey, "Control" }, "Return", function(c)
 		c:swap(awful.client.getmaster())
 	end, { description = "move to master", group = "client" }),
-	awful.key({ modkey }, "o", function(c)
-		c:move_to_screen()
-	end, { description = "move to screen", group = "client" }),
+	-- awful.key({ modkey }, "o", function(c)
+	-- 	c:move_to_screen()
+	-- end, { description = "move to screen", group = "client" }),
 	awful.key({ modkey }, "m", function(c)
 		c.maximized = not c.maximized
 		c:raise()
@@ -665,14 +798,43 @@ end)
 client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 end)
+
+-- Create a table to store last focused client for each screen
+local last_focused = {}
+
+-- Track focus changes
+client.connect_signal("focus", function(c)
+	-- Store the client as the last focused client for the current screen
+	last_focused[c.screen] = c
+end)
+
+-- When switching to another screen, focus the last focused client on that screen
+screen.connect_signal("request::desktop_decoration", function(s)
+	-- If a screen has a last focused client, focus that client
+	if last_focused[s] then
+		client.focus = last_focused[s]
+		last_focused[s]:raise() -- Raise the window to the front
+	end
+end)
+
 -- }}}
 
 -- MY ADDITIONAL CHANGES -------------------------
+-- Ensure that focus moves to the client when it is moved to another screen
+client.connect_signal("property::screen", function(c)
+	if client.focus ~= c then
+		client.focus = c -- Set focus to the client that was moved
+		c:raise() -- Ensure the client is raised above others
+	end
+end)
+
 --
 -- Autostart Apps (template from ArchWiki)
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 -- problems with launching xscreensaver in rofi and autorun scripts
 awful.spawn.with_shell("xscreensaver -no-splash &")
+awful.spawn.with_shell("xrandr --output DisplayPort-3 --mode 1920x1080 --rate 120 --primary --right-of DisplayPort-5")
+awful.spawn.with_shell("xrandr --output DisplayPort-5 --mode 1920x1080 --rate 120")
 
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
