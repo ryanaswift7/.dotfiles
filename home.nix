@@ -71,13 +71,14 @@
     simp1e-cursors
     zotero
     kdePackages.okular
-    conda
     openconnect
     ookla-speedtest
     signal-desktop
     xclip
     spice-vdagent
     networkmanagerapplet
+    nodePackages_latest.npm
+    python311Packages.conda
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -216,6 +217,8 @@
        pkgs.gcc
        pkgs.lazygit 
        pkgs.gh
+       pkgs.nodePackages_latest.npm
+       pkgs.python311Packages.conda
        ];
       };
 
