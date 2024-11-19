@@ -215,6 +215,7 @@
        extraPackages = [ 
        pkgs.gcc
        pkgs.lazygit 
+       pkgs.gh
        ];
       };
 
