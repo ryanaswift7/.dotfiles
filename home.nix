@@ -30,7 +30,6 @@
     pavucontrol
     blueman
     emacs
-    xscreensaver
     rofi
     flameshot
     kora-icon-theme
@@ -78,6 +77,7 @@
     signal-desktop
     xclip
     spice-vdagent
+    networkmanagerapplet
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -212,7 +212,10 @@
        plugins = with pkgs.vimPlugins; [
          nvim-treesitter.withAllGrammars
        ];
-       extraPackages = [ pkgs.gcc ];
+       extraPackages = [ 
+       pkgs.gcc
+       pkgs.lazygit 
+       ];
       };
 
     gtk = {
@@ -261,4 +264,7 @@
           ForwardAgent yes
       '';
 
+
+      services.picom.enable = true;
+      programs.lazygit.enable = true;
 }

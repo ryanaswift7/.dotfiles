@@ -240,14 +240,6 @@ awful.screen.connect_for_each_screen(function(s)
 		buttons = taglist_buttons,
 	})
 
-	-- Create a tasklist widget
-	s.mytasklist = awful.widget.tasklist({
-		screen = s,
-		filter = awful.widget.tasklist.filter.currenttags,
-		buttons = tasklist_buttons,
-	})
-
-	--[[
 	-- Create the wibox
 	s.mywibox = awful.wibar({
 		position = "top",
@@ -273,7 +265,6 @@ awful.screen.connect_for_each_screen(function(s)
 			s.mylayoutbox,
 		},
 	})
-  ]]
 	local colors = {
 		background = "#150d18",
 		background_alt = "#291f2b",
@@ -283,129 +274,6 @@ awful.screen.connect_for_each_screen(function(s)
 		alert = "#A54242",
 		disabled = "#707880",
 	}
-
-	-- Create the wibar
-	s.wibar = awful.wibar({
-		position = "top", -- Position of the wibar (top of the screen)
-		screen = s, -- Attach to the current screen
-		height = 34, -- Height of the wibar
-		bg = colors.background, -- Background color
-		fg = colors.foreground, -- Foreground (text) color
-		shape = gears.shape.rounded_rect, -- Rounded corners
-		border_width = 3, -- Border width
-		border_color = colors.disabled, -- Border color
-	})
-
-	-- Left widgets (workspace module)
-	local workspace_widget = wibox.widget({
-		{
-			{
-				awful.widget.taglist(s, awful.widget.tasklist.filter.currenttags, awful.layout.layouts[1]),
-				layout = wibox.layout.fixed.horizontal,
-			},
-			margins = 5,
-			widget = wibox.container.margin,
-		},
-		bg = colors.background_alt,
-		fg = colors.foreground,
-		shape = gears.shape.rounded_rect,
-		widget = wibox.container.background,
-	})
-
-	-- Center widgets (Date & Time)
-	local date_widget = wibox.widget.textbox()
-	date_widget:set_font("NotoSans-Medium 13")
-	gears.timer({
-		timeout = 1,
-		call_now = true,
-		autostart = true,
-		callback = function()
-			date_widget:set_text(os.date("%A, %d %B %Y"))
-		end,
-	})
-
-	local time_widget = wibox.widget.textbox()
-	time_widget:set_font("Symbols Nerd Font Mono 14")
-	gears.timer({
-		timeout = 1,
-		call_now = true,
-		autostart = true,
-		callback = function()
-			time_widget:set_text(os.date("%H:%M"))
-		end,
-	})
-
-	-- Right widgets (system information)
-	local tray_widget = wibox.widget.systray() -- System tray
-	local cpu_widget = wibox.widget.textbox()
-	local memory_widget = wibox.widget.textbox()
-	local volume_widget = wibox.widget.textbox()
-
-	-- CPU widget
-	gears.timer({
-		timeout = 2,
-		call_now = true,
-		autostart = true,
-		callback = function()
-			local cpu_usage = awful.spawn.easy_async_with_shell(
-				"top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\\([0-9.]*\\)%* id.*/\\1/' | awk '{print 100 - $1}'",
-				function(stdout)
-					cpu_widget:set_text(" " .. stdout:match("%S+"))
-				end
-			)
-		end,
-	})
-
-	-- Memory widget
-	gears.timer({
-		timeout = 2,
-		call_now = true,
-		autostart = true,
-		callback = function()
-			local memory_used = awful.spawn.easy_async_with_shell(
-				"free -h | grep Mem | awk '{print $3}'",
-				function(stdout)
-					memory_widget:set_text(" " .. stdout:match("%S+"))
-				end
-			)
-		end,
-	})
-
-	-- Volume widget
-	gears.timer({
-		timeout = 1,
-		call_now = true,
-		autostart = true,
-		callback = function()
-			awful.spawn.easy_async_with_shell(
-				"pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}'",
-				function(stdout)
-					volume_widget:set_text(" " .. stdout)
-				end
-			)
-		end,
-	})
-
-	-- Layout the widgets (left, center, and right)
-	s.wibar:setup({
-		layout = wibox.layout.align.horizontal,
-		{ -- Left side
-			layout = wibox.layout.fixed.horizontal,
-			workspace_widget,
-		},
-		{ -- Center side
-			layout = wibox.layout.flex.horizontal,
-			date_widget,
-			time_widget,
-		},
-		{ -- Right side
-			layout = wibox.layout.fixed.horizontal,
-			tray_widget,
-			cpu_widget,
-			memory_widget,
-			volume_widget,
-		},
-	})
 end)
 -- }}}
 
@@ -741,6 +609,15 @@ client.connect_signal("manage", function(c)
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
 
+	-- Handle newly created clients to ensure proper border colors
+	if client.focus == c then
+		-- If the new client is focused, assign the focused border color
+		c.border_color = beautiful.border_focus
+	else
+		-- Otherwise, assign the normal border color
+		c.border_color = beautiful.border_normal
+	end
+
 	if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
 		-- Prevent clients from being unreachable after screen count changes.
 		awful.placement.no_offscreen(c)
@@ -832,9 +709,10 @@ end)
 -- Autostart Apps (template from ArchWiki)
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 -- problems with launching xscreensaver in rofi and autorun scripts
-awful.spawn.with_shell("xscreensaver -no-splash &")
-awful.spawn.with_shell("xrandr --output DisplayPort-3 --mode 1920x1080 --rate 120 --primary --right-of DisplayPort-5")
-awful.spawn.with_shell("xrandr --output DisplayPort-5 --mode 1920x1080 --rate 120")
+-- awful.spawn.with_shell("xscreensaver -no-splash &")
+-- awful.spawn.with_shell("sleep 2")
+-- awful.spawn.with_shell("xrandr --output DisplayPort-3 --mode 1920x1080 --rate 120 --primary --right-of DisplayPort-5")
+-- awful.spawn.with_shell("xrandr --output DisplayPort-5 --mode 1920x1080 --rate 120")
 
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
