@@ -707,12 +707,13 @@ end)
 
 --
 -- Autostart Apps (template from ArchWiki)
-awful.spawn.with_shell("~/.config/awesome/autorun.sh")
--- problems with launching xscreensaver in rofi and autorun scripts
--- awful.spawn.with_shell("xscreensaver -no-splash &")
--- awful.spawn.with_shell("sleep 2")
--- awful.spawn.with_shell("xrandr --output DisplayPort-3 --mode 1920x1080 --rate 120 --primary --right-of DisplayPort-5")
--- awful.spawn.with_shell("xrandr --output DisplayPort-5 --mode 1920x1080 --rate 120")
+-- awful.spawn.with_shell("~/.config/awesome/autorun.sh")
+awful.spawn.with_shell("picom &")
+awful.spawn.with_shell("bm-applet &")
+awful.spawn.with_shell("nm-applet &")
+awful.spawn.with_shell("xscreensaver -no-splash &")
+awful.spawn.with_shell("xrandr --output DisplayPort-3 --mode 1920x1080 --rate 120 --primary --right-of DisplayPort-5")
+awful.spawn.with_shell("xrandr --output DisplayPort-5 --mode 1920x1080 --rate 120")
 
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
