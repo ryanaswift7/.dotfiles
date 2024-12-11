@@ -58,7 +58,6 @@
     ripgrep
     udiskie
     tmux
-    libgcc
     clipman
     starship
     gh
@@ -71,14 +70,14 @@
     simp1e-cursors
     zotero
     kdePackages.okular
-    openconnect
     ookla-speedtest
     signal-desktop
     xclip
     spice-vdagent
     networkmanagerapplet
     nodePackages_latest.npm
-    python311Packages.conda
+    conda
+    sshfs
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -141,6 +140,11 @@
         source = "${config.home.homeDirectory}/.dotfiles/.fonts";
       };
 
+    ".local/bin/mntrem" = {
+        source = "${config.home.homeDirectory}/.dotfiles/mntrem";
+        executable = true;
+      };
+
 
   };
 
@@ -164,6 +168,7 @@
     # EDITOR = "emacs";
   };
 
+  
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -196,9 +201,12 @@
           ll = "eza --long --all --sort=type";
           ".." = "cd ..";
           p = "python3";
+          python = "python3";
           usc = "openconnect-sso -s vpn.usc.edu";
           ta ="tmux attach-session -t";
+          umntrem = "fusermount -u ~/remote_mount/";
         };
+      initExtra = "";
     };
 
     programs.git = {
@@ -265,6 +273,18 @@
           HostName netpd.usc.edu
           User ryanswif
           Port 6305
+          ForwardAgent yes
+
+        Host labServer1
+          HostName 10.15.30.21
+          User ryanswif
+          Port 22
+          ForwardAgent yes
+
+        Host labServer2
+          HostName 10.15.30.22
+          User ryanswif
+          Port 22
           ForwardAgent yes
       '';
 

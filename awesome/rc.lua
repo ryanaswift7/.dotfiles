@@ -308,9 +308,9 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "n", function()
 		awful.spawn("zsh -c 'wezterm -e -- nvim'")
 	end, { description = "launch neovim", group = "applications" }),
-	awful.key({ modkey }, "e", function()
-		awful.spawn("emacsclient -c -a ''")
-	end, { description = "launch emacs", group = "applications" }),
+	awful.key({ modkey }, "c", function()
+		awful.spawn("code")
+	end, { description = "launch vscode", group = "applications" }),
 	awful.key({}, "Print", function()
 		awful.spawn("flameshot gui")
 	end, { description = "take screenshot", group = "applications" }),

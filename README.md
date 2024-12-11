@@ -56,6 +56,8 @@ if you're on another OS and get any weirdness.
 
 - Only necessary for using the VPN aliases
 
+- (ISSUE) Running into glibc version issue when executing. No fix yet.
+
 #### 11. Done!
 
 - Logout then log back in under the AwesomeWM session
