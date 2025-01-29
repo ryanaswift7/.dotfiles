@@ -43,7 +43,7 @@
     fzf
     fd
     eza
-    nerdfonts
+    nerd-fonts.symbols-only
     cascadia-code
     fira-code
     inconsolata

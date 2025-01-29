@@ -712,7 +712,6 @@ awful.spawn.with_shell("picom &")
 awful.spawn.with_shell("blueman-applet &")
 awful.spawn.with_shell("nm-applet &")
 awful.spawn.with_shell("xscreensaver -no-splash &")
-awful.spawn.with_shell("sleep 8")
 awful.spawn.with_shell("xrandr --output DisplayPort-3 --mode 1920x1080 --rate 120 --primary --right-of DisplayPort-5")
 awful.spawn.with_shell("xrandr --output DisplayPort-5 --mode 1920x1080 --rate 120")
 
