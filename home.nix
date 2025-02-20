@@ -76,9 +76,9 @@
     spice-vdagent
     networkmanagerapplet
     nodePackages_latest.npm
-    conda
     sshfs
     slack
+    fwupd
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -227,7 +227,6 @@
        pkgs.lazygit 
        pkgs.gh
        pkgs.nodePackages_latest.npm
-       pkgs.python311Packages.conda
        ];
       };
 
