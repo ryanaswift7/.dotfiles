@@ -1,0 +1,1 @@
+/home/ryan/.emacs.d/straight/repos/swiper/counsel.el

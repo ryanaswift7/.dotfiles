@@ -1,0 +1,1 @@
+/home/ryan/.emacs.d/straight/repos/evil-collection/modes/elpaca/evil-collection-elpaca.el
