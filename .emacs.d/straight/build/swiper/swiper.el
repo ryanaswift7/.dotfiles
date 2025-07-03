@@ -1,1 +1,0 @@
-/home/ryan/.emacs.d/straight/repos/swiper/swiper.el

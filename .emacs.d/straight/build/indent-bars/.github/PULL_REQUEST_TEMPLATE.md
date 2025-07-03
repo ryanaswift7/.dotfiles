@@ -1,1 +1,0 @@
-/home/ryan/.emacs.d/straight/repos/indent-bars/.github/PULL_REQUEST_TEMPLATE.md
