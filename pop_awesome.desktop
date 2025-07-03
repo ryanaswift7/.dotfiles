@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=PopAwesome
+Comment=This session logs you into Pop
+Exec=nixGL awesome
+TryExec=/usr/bin/gnome-shell
+Type=Application
+DesktopNames=pop:GNOME
+X-GDM-SessionRegisters=true
+X-Ubuntu-Gettext-Domain=gnome-session-3.0

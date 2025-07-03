@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Fixed variables
+REMOTE_USER="ryanswif"            # Replace with your remote username
+MOUNT_POINT="$HOME/remote_mount/" # Replace with your local mount point
+LAB_SERVER1="labServer1"          # Lab Server 1 address
+LAB_SERVER2="labServer2"          # Lab Server 2 address
+SERVER1="server1"                 # Server 1 address
+SERVER2="server2"                 # Server 2 address
+
+# Parse arguments
+USE_LAB=false
+SERVER_NUMBER=""
+while getopts ":l" opt; do
+  case $opt in
+  l)
+    USE_LAB=true
+    ;;
+  *)
+    echo "Invalid option: -$OPTARG" >&2
+    exit 1
+    ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# Ensure a server number and remote directory are supplied
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 [-l] <1|2> <remote_directory>"
+  exit 1
+fi
+
+SERVER_NUMBER=$1
+REMOTE_DIR=$2
+
+# Validate server number
+if [[ "$SERVER_NUMBER" != "1" && "$SERVER_NUMBER" != "2" ]]; then
+  echo "Invalid server number: $SERVER_NUMBER. Please use 1 or 2."
+  exit 1
+fi
+
+# Determine the remote host
+if [ "$USE_LAB" = true ]; then
+  if [ "$SERVER_NUMBER" -eq 1 ]; then
+    REMOTE_HOST="$LAB_SERVER1"
+  else
+    REMOTE_HOST="$LAB_SERVER2"
+  fi
+else
+  if [ "$SERVER_NUMBER" -eq 1 ]; then
+    REMOTE_HOST="$SERVER1"
+  else
+    REMOTE_HOST="$SERVER2"
+  fi
+fi
+
+# Check if the mount point exists
+if [ ! -d "$MOUNT_POINT" ]; then
+  echo "Mount point $MOUNT_POINT does not exist."
+  exit 1
+fi
+
+# Use sshfs to mount the remote directory to the local mount point
+sshfs ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DIR} ${MOUNT_POINT}
+
+if [ $? -eq 0 ]; then
+  echo "Successfully mounted ${REMOTE_DIR} from ${REMOTE_HOST} to ${MOUNT_POINT}."
+else
+  echo "Failed to mount ${REMOTE_DIR} from ${REMOTE_HOST}."
+  exit 2
+fi

@@ -1,0 +1,36 @@
+[font.bold]
+family = "CaskaydiaMono Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "CaskaydiaMono Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "CaskaydiaMono Nerd Font Mono"
+style = "Regular"
+
+[font.offset]
+x = 0
+y = 0
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font]
+size = 12.5
+
+[window]
+decorations = "full"
+dynamic_title = false
+opacity = 0.95
+title = "Alacritty"
+dynamic_padding = true
+
+[window.padding]
+x = 0
+y = 0
+
+[scrolling]
+history = 10000
