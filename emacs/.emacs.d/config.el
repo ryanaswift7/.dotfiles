@@ -167,7 +167,7 @@ one, an error is signaled."
 
 (set-face-attribute 'default nil
    :font "JetBrains Mono Nerd Font"
-   :height 110
+   :height 100
    :weight 'medium)
  (set-face-attribute 'variable-pitch nil
    :font "Ubuntu"
@@ -262,6 +262,9 @@ one, an error is signaled."
     (leader-key
       "f u" '(sudo-edit-find-file :wk "Sudo find file")
       "f U" '(sudo-edit :wk "Sudo edit file")))
+
+(setq find-file-visit-truename t)
+(setq vc-follow-symlinks t)
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'eh t)

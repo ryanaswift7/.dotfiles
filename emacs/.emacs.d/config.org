@@ -30,6 +30,7 @@
   - [[#enabling-org-bullets][Enabling Org Bullets]]
   - [[#source-code-block-tag-expansion][Source Code Block Tag Expansion]]
 - [[#sudo-edit][SUDO EDIT]]
+- [[#symlinks][SYMLINKS]]
 - [[#theme][THEME]]
 - [[#emacs-utils][EMACS UTILS]]
   - [[#auto-tangle-on-save][Auto-Tangle on Save]]
@@ -242,7 +243,7 @@ Defining the various fonts that Emacs will use.
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil
     :font "JetBrains Mono Nerd Font"
-    :height 110
+    :height 100
     :weight 'medium)
   (set-face-attribute 'variable-pitch nil
     :font "Ubuntu"
@@ -397,6 +398,13 @@ Org-tempo is not a separate package but a module within org that can be enabled.
     (leader-key
       "f u" '(sudo-edit-find-file :wk "Sudo find file")
       "f U" '(sudo-edit :wk "Sudo edit file")))
+#+end_src
+
+* SYMLINKS
+When opening a file symlinked elsewhere, Emacs will always ask if you would like to follow the symlink to edit the original file (especially if it's under VC). This tells Emacs to always do this and never ask me about it.
+#+begin_src emacs-lisp
+  (setq find-file-visit-truename t)
+  (setq vc-follow-symlinks t)
 #+end_src
 
 * THEME
