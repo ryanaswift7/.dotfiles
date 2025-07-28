@@ -9,10 +9,12 @@ local config = wezterm.config_builder()
 -- For example, changing the color scheme:
 config.color_scheme = "duckbones"
 config.window_close_confirmation = "NeverPrompt"
-config.font = wezterm.font("FiraCode Nerd Font")
+config.font = wezterm.font("CaskaydiaMono Nerd Font")
 config.hide_tab_bar_if_only_one_tab = true
 config.window_background_opacity = 0.93
-config.front_end = "WebGpu"
+ config.front_end = "OpenGL"
+
+config.enable_wayland = false
 
 config.keys = {}
 

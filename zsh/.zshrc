@@ -107,8 +107,8 @@ source $ZSH/oh-my-zsh.sh
 # changes to PATH
 # INSTEAD OF ADDING TO PATH, SYMLINK TO /usr/bin
 # export PATH="$HOME/Downloads/tarballs/nvim-linux64/bin":$PATH
-export PATH="$HOME/Downloads/tarballs/lazygit_0.43.1_Linux_x86_64":$PATH
-export PATH=$PATH:/usr/local/go/bin
+# export PATH="$HOME/Downloads/tarballs/lazygit_0.43.1_Linux_x86_64":$PATH
+# export PATH=$PATH:/usr/local/go/bin
 
 # GENERATE SSH CONFIG FROM TEMPLATE
 # This makes your sensitive IP/port variables available in the current shell session.
@@ -129,3 +129,12 @@ if [ -f "$HOME/.ssh/config.tmpl" ]; then # Adjust path if your dotfiles are else
 else
     echo "Error: SSH config template not found at $HOME/.ssh/config.tmpl" >&2
 fi
+
+
+alias ll="eza --header --long --all --sort=type --group-directories-first --icons --git"
+alias ".."="cd .."
+alias p="python3"
+alias python="python3"
+alias usc="openconnect-sso -s vpn.usc.edu"
+alias ta="tmux attach-session -t"
+alias umntrem="fusermount -u ~/remote_mount/"
